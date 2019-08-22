@@ -12,7 +12,7 @@ class Tree {
         }
         this[node.value] = node;
 
-        let acceptorNode = this.findPosition(node);
+        let acceptorNode = this.findPositionForNewNode(node);
 
         if (node.value < acceptorNode.value) {
             acceptorNode.leftNode = node.value;
@@ -25,25 +25,28 @@ class Tree {
         }
     }
 
-    findPosition(node, currentNode = this.rootNode) {
-        if (!this.rootNode) return null;
+    findPositionForNewNode(node, currentNode = this.rootNode) {
+        if (!this.rootNode) {
+            return 'tree is empty';
+        }
         if (node.value === currentNode.value) {
             return 'this node is present';
         }
 
         if (node.value < currentNode.value) {
-            if (!currentNode.leftNode) {
-                return currentNode;
-            } else {
-                return this.findPosition(node, this[currentNode.leftNode]);
-            }
+            return currentNode.leftNode
+                ? this.findPositionForNewNode(node, this[currentNode.leftNode])
+                : currentNode;
         }
 
         if (node.value > currentNode.value) {
             if (!currentNode.rightNode) {
                 return currentNode;
             } else {
-                return this.findPosition(node, this[currentNode.rightNode]);
+                return this.findPositionForNewNode(
+                    node,
+                    this[currentNode.rightNode]
+                );
             }
         }
     }
